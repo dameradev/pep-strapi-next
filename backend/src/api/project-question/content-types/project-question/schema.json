@@ -1,0 +1,36 @@
+{
+  "kind": "collectionType",
+  "collectionName": "project_questions",
+  "info": {
+    "singularName": "project-question",
+    "pluralName": "project-questions",
+    "displayName": "projectQuestion"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "question": {
+      "type": "string"
+    },
+    "applicant": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::applicant.applicant"
+    },
+    "project": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::project.project"
+    },
+    "organization": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "api::organization.organization"
+    },
+    "answer": {
+      "type": "blocks"
+    }
+  }
+}
