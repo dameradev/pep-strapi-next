@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import SingleProject from './SingleProject';
-import { Carousel, CarouselContent, CarouselItem, CarouselPrevious, CarouselNext } from '@/ui/carousel';
+import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 
 const ProjectList = ({ projects }) => {
   console.log(projects)
@@ -9,8 +9,7 @@ const ProjectList = ({ projects }) => {
 
 
       <Carousel>
-        <CarouselContent className="gap-4
-        ">
+        <CarouselContent className="gap-4">
           {projects?.map((project) => (
             <CarouselItem className="basis-1/3 min-w-[400px]">
               <SingleProject project={project} />

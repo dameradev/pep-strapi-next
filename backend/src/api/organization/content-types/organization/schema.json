@@ -15,21 +15,16 @@
     "name": {
       "type": "string"
     },
-    "url": {
-      "type": "string"
-    },
     "image": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
       "allowedTypes": [
         "images",
         "files",
         "videos",
         "audios"
-      ],
-      "type": "media",
-      "multiple": false
-    },
-    "description": {
-      "type": "blocks"
+      ]
     },
     "email": {
       "type": "email"
@@ -38,6 +33,36 @@
       "type": "relation",
       "relation": "oneToMany",
       "target": "api::project.project"
+    },
+    "phoneNumber": {
+      "type": "string"
+    },
+    "description": {
+      "type": "blocks"
+    },
+    "whoAreWe": {
+      "type": "text"
+    },
+    "address": {
+      "type": "string"
+    },
+    "zipCode": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "country": {
+      "type": "string"
+    },
+    "ourVision": {
+      "type": "text"
+    },
+    "whatWeDo": {
+      "type": "text"
+    },
+    "website": {
+      "type": "string"
     }
   }
 }

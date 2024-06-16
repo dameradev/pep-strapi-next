@@ -4,7 +4,7 @@ interface FeaturesProps {
   data: {
     heading: string;
     description: string;
-    feature: Feature[];
+    feature?: Feature[];
   };
 }
 
@@ -12,15 +12,15 @@ interface Feature {
   id: string;
   title: string;
   description: string;
-  showLink: boolean;
-  newTab: boolean;
-  url: string;
-  text: string;
+  showLink?: boolean;
+  newTab?: boolean;
+  url?: string;
+  text?: string;
 }
 
 function Feature({ title, description, showLink, newTab, url, text }: Feature) {
   return (
-    <div className="flex flex-col items-center p-4">
+    <div className="flex flex-col items-center p-4 ">
       <svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
@@ -34,7 +34,7 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
         ></path>
       </svg>
       <h3 className="my-3 text-3xl font-semibold">{title}</h3>
-      <div className="space-y-1 leading-tight my-6">
+      <div className="space-y-1 leading-normal my-6 text-center">
         <p>{description}</p>
       </div>
       {showLink && url && text && (
@@ -53,14 +53,15 @@ function Feature({ title, description, showLink, newTab, url, text }: Feature) {
 }
 
 export default function Features({ data }: FeaturesProps) {
+  // console.log(data)
   return (
-    <section className="dark:bg-black dark:text-gray-100 m:py-12 lg:py-24">
+    <section className="dark:bg-white !text-black  m:py-12 lg:py-24">
       <div className="container mx-auto py-4 space-y-2 text-center">
         <h2 className="text-5xl font-bold">{data.heading}</h2>
         <p className="dark:text-gray-400">{data.description}</p>
       </div>
       <div className="container mx-auto my-6 grid justify-center gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {data.feature.map((feature: Feature, index: number) => (
+        {data.feature?.map((feature: Feature, index: number) => (
           <Feature key={index} {...feature} />
         ))}
       </div>

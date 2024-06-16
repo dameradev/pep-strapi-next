@@ -39,12 +39,11 @@ const Profile = async ({ params }) => {
  
   const projectsData = await fetchProjects(0, Number(process.env.NEXT_PUBLIC_PAGE_LIMIT));
 
-  console.log(projectsData);
   const projects = projectsData?.data;
   const meta = projectsData.meta;
 
   return (
-    <div className='px-10'>
+    <div className='px-10 mt-20'>
 
         <PageHeader heading="Our Projects" text="Checkout Our Amazing Projects" />
         <ProjectList projects={projects} meta={meta}>

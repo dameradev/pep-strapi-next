@@ -8,6 +8,7 @@ import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
 import {FALLBACK_SEO} from "@/app/[lang]/utils/constants";
+import SessionWrapper from "./components/custom/SessionWrapper";
 
 
 async function getGlobal(lang: string): Promise<any> {
@@ -75,6 +76,8 @@ export default async function RootLayout({
   );
 
   return (
+    <SessionWrapper>
+
     <html lang={params.lang}>
       <body>
         <Navbar
@@ -83,7 +86,7 @@ export default async function RootLayout({
           logoText={navbar?.navbarLogo?.logoText}
         />
 
-        <main className="dark:bg-black dark:text-gray-100 min-h-screen">
+        <main className="dark:bg-white  min-h-screen pt-20">
           {children}
         </main>
 
@@ -99,6 +102,8 @@ export default async function RootLayout({
         />
       </body>
     </html>
+    </SessionWrapper>
+
   );
 }
 

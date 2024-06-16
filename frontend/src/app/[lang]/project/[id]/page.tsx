@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import Link from 'next/link';
 import { fetchAPI } from '../../utils/fetch-api';
 import request, { gql } from 'graphql-request';
+import BlockRendererClient from '../../components/BlockRendererClient';
+import Image from 'next/image';
 
 interface ProjectProps {
   project: {
@@ -27,9 +29,18 @@ const GET_SINGLE_PROJECT = gql`
           title
           content
           externalLink
+          image  {
+            data {
+              attributes {
+                url
+              }
+            }
+          }
           startDate
           endDate
           externalLink
+          projectActivity
+          projectType
         }
       }
     }
@@ -49,40 +60,94 @@ const Project: NextPage<ProjectProps> = async ({ params }) => {
   if (!data) {
     return { notFound: true };
   }
-  console.log(data, 'data')
 
-  const { title, startDate, endDate, description, externalLink, content  } = data.project.data.attributes;
+  const { title, startDate, endDate, content, externalLink, projectActivity, projectType, image  } = data.project.data.attributes;
+  console.log(image?.data[0].attributes.url,'image')
 
-  console.log(title, startDate, endDate, description, externalLink, 'data')
   return (
-    <>
-      <header className="bg-gray-800 p-4">
-        <div className="container mx-auto">
-          <h1 className="text-3xl font-bold">{title}</h1>
+    <section className="bg-gray-50 sm:py-16 lg:py-20">
+      <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
+        <div className="grid items-center grid-cols-1 gap-y-8 sm:gap-y-12 lg:grid-cols-2 lg:gap-x-16 xl:gap-x-32">
+          {image && (
+            <div className="lg:order-2">
+              <Image
+                className="w-full filter drop-shadow-2xl"
+                src={image?.data?.[0]?.attributes.url} 
+                alt={title}
+                width={500}
+                height={500}
+              />
+            </div>
+          )}
+
+          <div className="flex flex-col justify-between lg:order-1">
+            <div className="flex-1">
+              <h2 className="text-3xl font-bold text-gray-900 sm:text-4xl">
+                {title}
+              </h2>
+            </div>
+
+            <div className="grid max-w-xs grid-cols-1 mt-10 gap-y-6 sm:max-w-none sm:grid-cols-2 sm:gap-x-8 xl:mt-20 md:gap-x-16 lg:gap-x-8 xl:gap-x-16">
+              {startDate && (
+                <div>
+                  <div className="w-24 h-px bg-gray-200"></div>
+                  <h3 className="text-lg font-bold text-gray-900 mt-7">
+                    Start Date
+                  </h3>
+                  <p className="mt-4 text-sm font-normal text-gray-600">
+                    <time dateTime={startDate}>
+                      {new Date(startDate).toLocaleDateString()}
+                    </time>
+                  </p>
+                </div>
+              )}
+
+              {endDate && (
+                <div>
+                  <div className="w-24 h-px bg-gray-200"></div>
+                  <h3 className="text-lg font-bold text-gray-900 mt-7">
+                    End Date
+                  </h3>
+                  <p className="mt-4 text-sm font-normal text-gray-600">
+                    <time dateTime={endDate}>
+                      {new Date(endDate).toLocaleDateString()}
+                    </time>
+                  </p>
+                </div>
+              )}
+
+              {projectActivity && (
+                <div>
+                  <div className="w-24 h-px bg-gray-200"></div>
+                  <h3 className="text-lg font-bold text-gray-900 mt-7">
+                    Project Activity
+                  </h3>
+                  <p className="mt-4 text-sm font-normal text-gray-600">
+                    {projectActivity}
+                  </p>
+                </div>
+              )}
+
+              {projectType && (
+                <div>
+                  <div className="w-24 h-px bg-gray-200"></div>
+                  <h3 className="text-lg font-bold text-gray-900 mt-7">
+                    Project Type
+                  </h3>
+                  <p className="mt-4 text-sm font-normal text-gray-600">
+                    {projectType}
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </header>
-
-      <main className="container mx-auto mt-8 p-4 bg-white text-black  shadow-md rounded-md">
-        <section className="mb-4">
-          <h2 className="text-2xl font-semibold">Project Timeline</h2>
-          <p>Start Date: <time dateTime={startDate}>{new Date(startDate).toLocaleDateString()}</time></p>
-          <p>End Date: <time dateTime={endDate}>{new Date(endDate).toLocaleDateString()}</time></p>
-        </section>
-
-        <section className="mb-4">
-          <h2 className="text-2xl font-semibold">Project Description</h2>
-          <div className="prose" dangerouslySetInnerHTML={{__html: content}} />
-            
-        </section>
-
-        <section className="mb-4">
-          <h2 className="text-2xl font-semibold">External Link</h2>
-          <a href={externalLink} className="text-blue-500 underline">{externalLink}</a>
-        </section>
-      </main>
-
-      
-    </>
+        <div className="rich-text mt-32 prose prose-xl mx-auto">
+          <BlockRendererClient content={content} />
+        </div>
+      </div>
+    </section>
   );
-}
+};
+
 export default Project;

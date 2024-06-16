@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
+import { Button } from "./ui/button";
 
 interface NavLink {
   id: number;
@@ -68,7 +69,7 @@ export default function Navbar({
     setMobileMenuOpen(false);
   };
   return (
-    <div className="p-4 dark:bg-black dark:text-gray-100">
+    <div className="p-4 dark:bg-white dark:text-gray-800 fixed w-full shadow-2xl z-10">
       <div className="container flex justify-between h-16 mx-auto px-0 sm:px-6">
         <Logo src={logoUrl}>
           {logoText && <h2 className="text-2xl font-bold">{logoText}</h2>}
@@ -80,6 +81,13 @@ export default function Navbar({
               <NavLink key={item.id} {...item} />
             ))}
           </ul>
+        </div>
+        <div className="flex items-center">
+          <Button variant="outline">
+            <Link href={'/sign-up'}>
+              Sign up
+            </Link>
+          </Button>
         </div>
 
         <Dialog

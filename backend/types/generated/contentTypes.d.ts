@@ -1108,15 +1108,23 @@ export interface ApiOrganizationOrganization extends Schema.CollectionType {
   };
   attributes: {
     name: Attribute.String;
-    url: Attribute.String;
     image: Attribute.Media;
-    description: Attribute.Blocks;
     email: Attribute.Email;
     projects: Attribute.Relation<
       'api::organization.organization',
       'oneToMany',
       'api::project.project'
     >;
+    phoneNumber: Attribute.String;
+    description: Attribute.Blocks;
+    whoAreWe: Attribute.Text;
+    address: Attribute.String;
+    zipCode: Attribute.String;
+    city: Attribute.String;
+    country: Attribute.String;
+    ourVision: Attribute.Text;
+    whatWeDo: Attribute.Text;
+    website: Attribute.String;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;
@@ -1163,8 +1171,6 @@ export interface ApiPagePage extends Schema.CollectionType {
       [
         'sections.hero',
         'sections.bottom-actions',
-        'sections.feature-columns-group',
-        'sections.feature-rows-group',
         'sections.testimonials-group',
         'sections.large-video',
         'sections.rich-text',
@@ -1280,6 +1286,21 @@ export interface ApiProjectProject extends Schema.CollectionType {
       'api::organization.organization'
     >;
     tag: Attribute.Relation<'api::project.project', 'oneToOne', 'api::tag.tag'>;
+    projectType: Attribute.Enumeration<
+      ['ESC', 'Training Course', 'Youth Exchange']
+    >;
+    projectActivity: Attribute.Enumeration<
+      [
+        'Environment and health care',
+        'Cultural awareness',
+        'Inclusion and equality',
+        'Digital knowledge',
+        'Sport',
+        'Learning',
+        'Methods life long learning',
+        'Foreign languages'
+      ]
+    >;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

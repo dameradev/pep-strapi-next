@@ -55,6 +55,27 @@
       "type": "relation",
       "relation": "oneToOne",
       "target": "api::tag.tag"
+    },
+    "projectType": {
+      "type": "enumeration",
+      "enum": [
+        "ESC",
+        "Training Course",
+        "Youth Exchange"
+      ]
+    },
+    "projectActivity": {
+      "type": "enumeration",
+      "enum": [
+        "Environment and health care",
+        "Cultural awareness",
+        "Inclusion and equality",
+        "Digital knowledge",
+        "Sport",
+        "Learning",
+        "Methods life long learning",
+        "Foreign languages"
+      ]
     }
   }
 }
