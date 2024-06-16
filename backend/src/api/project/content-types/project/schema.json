@@ -29,7 +29,7 @@
     },
     "image": {
       "type": "media",
-      "multiple": true,
+      "multiple": false,
       "required": false,
       "allowedTypes": [
         "images",
@@ -75,6 +75,14 @@
         "Learning",
         "Methods life long learning",
         "Foreign languages"
+      ]
+    },
+    "country": {
+      "type": "enumeration",
+      "enum": [
+        "Macedonia",
+        "Bulgaria",
+        "Greece"
       ]
     }
   }

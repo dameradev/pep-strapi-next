@@ -1301,6 +1301,7 @@ export interface ApiProjectProject extends Schema.CollectionType {
         'Foreign languages'
       ]
     >;
+    country: Attribute.Enumeration<['Macedonia', 'Bulgaria', 'Greece']>;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     publishedAt: Attribute.DateTime;

@@ -77,7 +77,7 @@ export default function Navbar({
 
   return (
     <div className="py-2 bg-white fixed w-full shadow-2xl z-[1000]">
-      <div className="container flex justify-between h-16 mx-auto px-0 sm:px-6">
+      <div className="container grid grid-cols-3 h-16 mx-auto px-0 sm:px-6">
         <Logo src={logoUrl}>
           {logoText && <h2 className="text-2xl font-bold">{logoText}</h2>}
         </Logo>
@@ -93,7 +93,7 @@ export default function Navbar({
               <Link href={"/sign-up"}>Sign in</Link>
             </Button>
           ) : (
-            <div className="flex gap-2 items-center">
+            <div className="flex gap-2 items-center  justify-end w-full ">
               <Image
                 className="rounded-full"
                 src={user.image || ""}

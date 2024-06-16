@@ -4,7 +4,6 @@ import SingleProject from './SingleProject';
 import { Carousel, CarouselContent, CarouselItem } from '../ui/carousel';
 
 const ProjectList = ({ projects }) => {
-  console.log(projects)
   return (
 
 
