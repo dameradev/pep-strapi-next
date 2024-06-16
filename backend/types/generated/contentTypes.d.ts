@@ -1278,7 +1278,7 @@ export interface ApiProjectProject extends Schema.CollectionType {
     applicants: Attribute.Relation<
       'api::project.project',
       'oneToMany',
-      'api::applicant.applicant'
+      'plugin::users-permissions.user'
     >;
     organization: Attribute.Relation<
       'api::project.project',

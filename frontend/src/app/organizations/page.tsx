@@ -44,7 +44,7 @@ const Profile = async ({ params }) => {
   const meta = organizationsData.meta;
 
   return (
-    <div className="px-10 mt-10 grid grid-cols-[20%_1fr]">
+    <div className="px-10 mt-10 grid grid-cols-[20%_1fr] container mx-auto">
       <div>
         Filters
         {/* Add search field, country field, type of organization field */}
@@ -52,15 +52,13 @@ const Profile = async ({ params }) => {
       <ul>
         {organizations?.map((organization) => (
           <li className="" key={organization.id}>
-            {console.log(organization)}
             <Link href={`/organization/${organization.id}`}>
               <article className="grid grid-cols-[35%_1fr] rounded-lg bg-white shadow-secondary-1 dark:bg-surface-dark text-surface h-[20rem]">
                 <div className="relative overflow-hidden bg-cover bg-no-repeat">
                   <Image
                     className="rounded-lg"
                     src={organization.attributes.image?.data.attributes?.url}
-                    fill
-                  />
+                    fill alt={organization.attributes.name}                  />
                 </div>
                 <div className="p-6">
                   <h5 className="mb-2 text-xl font-medium leading-tight">

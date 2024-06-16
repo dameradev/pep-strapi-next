@@ -44,7 +44,7 @@
     "applicants": {
       "type": "relation",
       "relation": "oneToMany",
-      "target": "api::applicant.applicant"
+      "target": "plugin::users-permissions.user"
     },
     "organization": {
       "type": "relation",
