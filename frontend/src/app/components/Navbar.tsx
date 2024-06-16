@@ -6,6 +6,9 @@ import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { useState } from "react";
 import { Button } from "./ui/button";
+import { signOut, useSession } from "next-auth/react";
+import Image from "next/image";
+import { LogOut } from "lucide-react";
 
 interface NavLink {
   id: number;
@@ -68,8 +71,12 @@ export default function Navbar({
   const closeMenu = () => {
     setMobileMenuOpen(false);
   };
+
+  const session = useSession();
+  const user = session.data?.user;
+
   return (
-    <div className="p-4 dark:bg-white dark:text-gray-800 fixed w-full shadow-2xl z-10">
+    <div className="py-2 bg-white fixed w-full shadow-2xl z-[1000]">
       <div className="container flex justify-between h-16 mx-auto px-0 sm:px-6">
         <Logo src={logoUrl}>
           {logoText && <h2 className="text-2xl font-bold">{logoText}</h2>}
@@ -77,17 +84,27 @@ export default function Navbar({
 
         <div className="items-center flex-shrink-0 hidden lg:flex">
           <ul className="items-stretch hidden space-x-3 lg:flex">
-            {links?.map((item: NavLink) => (
-              <NavLink key={item.id} {...item} />
-            ))}
+            {links?.map((item: NavLink) => <NavLink key={item.id} {...item} />)}
           </ul>
         </div>
         <div className="flex items-center">
-          <Button variant="outline">
-            <Link href={'/sign-up'}>
-              Sign up
-            </Link>
-          </Button>
+          {!user ? (
+            <Button variant="outline">
+              <Link href={"/sign-up"}>Sign in</Link>
+            </Button>
+          ) : (
+            <div className="flex gap-2 items-center">
+              <Image
+                className="rounded-full"
+                src={user.image || ""}
+                alt="Profile picture"
+                height={40}
+                width={40}
+              />
+              {user.name}
+              <span className="cursor-pointer" onClick={() => signOut()}><LogOut/></span>
+            </div>
+          )}
         </div>
 
         <Dialog

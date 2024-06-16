@@ -1,13 +1,17 @@
 // mark as client component
 "use client";
 
+import { sign } from "crypto";
 // importing necessary functions
 import { useSession, signIn, signOut } from "next-auth/react"
 import Image from "next/image";
+import GoogleSignInButton from "./GoogleSignInButton";
 
 export default function Home() {
   // extracting data from usesession as session
   const { data: session } = useSession()
+
+  console.log(session)
 
   // checking if sessions exists
   if (session) {
@@ -25,7 +29,7 @@ export default function Home() {
   return (
     <>
         <p>Not Signed In</p>
-        <button onClick={() => signIn('google')}>Sign in with google</button>
+       <GoogleSignInButton />
         <button onClick={() => signIn('github')}>Sign in with github</button>
     </>
   )

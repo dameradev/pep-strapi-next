@@ -2,10 +2,10 @@ import React from 'react';
 import { GetStaticPaths, GetStaticProps, NextPage } from 'next';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
-import { fetchAPI } from '../../utils/fetch-api';
 import request, { gql } from 'graphql-request';
 import BlockRendererClient from '../../components/BlockRendererClient';
 import Image from 'next/image';
+import { Dialog } from '@headlessui/react';
 
 interface ProjectProps {
   project: {
@@ -62,9 +62,9 @@ const Project: NextPage<ProjectProps> = async ({ params }) => {
   }
 
   const { title, startDate, endDate, content, externalLink, projectActivity, projectType, image  } = data.project.data.attributes;
-  console.log(image?.data[0].attributes.url,'image')
 
   return (
+    <>
     <section className="bg-gray-50 sm:py-16 lg:py-20">
       <div className="px-4 mx-auto sm:px-6 lg:px-8 max-w-7xl">
         <div className="grid items-center grid-cols-1 gap-y-8 sm:gap-y-12 lg:grid-cols-2 lg:gap-x-16 xl:gap-x-32">
@@ -142,11 +142,54 @@ const Project: NextPage<ProjectProps> = async ({ params }) => {
             </div>
           </div>
         </div>
-        <div className="rich-text mt-32 prose prose-xl mx-auto">
+        {/* <div className="rich-text mt-32 prose prose-xl mx-auto">
           <BlockRendererClient content={content} />
-        </div>
+        </div> */}
       </div>
     </section>
+    <section>
+           <Dialog>
+        <DialogTrigger asChild>
+          <Button variant="outline">Apply now</Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Edit profile</DialogTitle>
+            <DialogDescription>
+              Make changes to your profile here. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <div className="grid gap-4 py-4">
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="name" className="text-right">
+                Name
+              </Label>
+              <Input
+                id="name"
+                defaultValue="Pedro Duarte"
+                className="col-span-3"
+              />
+            </div>
+            <div className="grid grid-cols-4 items-center gap-4">
+              <Label htmlFor="username" className="text-right">
+                Username
+              </Label>
+              <Input
+                id="username"
+                defaultValue="@peduarte"
+                className="col-span-3"
+              />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button type="submit">Save changes</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+    </section>
+    </>
+
   );
 };
 

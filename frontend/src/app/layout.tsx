@@ -3,11 +3,11 @@ import "./globals.css";
 import { getStrapiMedia, getStrapiURL } from "./utils/api-helpers";
 import { fetchAPI } from "./utils/fetch-api";
 
-import { i18n } from "../../../i18n-config";
+import { i18n } from "../../i18n-config";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import {FALLBACK_SEO} from "@/app/[lang]/utils/constants";
+import {FALLBACK_SEO} from "@/app/utils/constants";
 import SessionWrapper from "./components/custom/SessionWrapper";
 
 
@@ -38,7 +38,7 @@ async function getGlobal(lang: string): Promise<any> {
 }
 
 export async function generateMetadata({ params } : { params: {lang: string}}): Promise<Metadata> {
-  const meta = await getGlobal(params.lang);
+  const meta = await getGlobal("en");
 
   if (!meta.data) return FALLBACK_SEO;
 
@@ -61,7 +61,7 @@ export default async function RootLayout({
   readonly children: React.ReactNode;
   readonly params: { lang: string };
 }) {
-  const global = await getGlobal(params.lang);
+  const global = await getGlobal("en");
   // TODO: CREATE A CUSTOM ERROR PAGE
   if (!global.data) return null;
   
@@ -78,7 +78,7 @@ export default async function RootLayout({
   return (
     <SessionWrapper>
 
-    <html lang={params.lang}>
+    <html lang={"en"}>
       <body>
         <Navbar
           links={navbar?.links}
@@ -105,8 +105,4 @@ export default async function RootLayout({
     </SessionWrapper>
 
   );
-}
-
-export async function generateStaticParams() {
-  return i18n.locales.map((locale) => ({ lang: locale }));
 }
