@@ -22,6 +22,7 @@ export default async function RootRoute({ params }: { params: { lang: string } }
     )
 
   } catch (error: any) {
-    window.alert('Missing or invalid credentials')
+    console.error(error)
+    // window?.alert('Missing or invalid credentials')
   }
 }

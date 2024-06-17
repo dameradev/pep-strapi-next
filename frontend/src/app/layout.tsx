@@ -7,7 +7,7 @@ import { i18n } from "../../i18n-config";
 import Banner from "./components/Banner";
 import Footer from "./components/Footer";
 import Navbar from "./components/Navbar";
-import {FALLBACK_SEO} from "@/app/utils/constants";
+import { FALLBACK_SEO } from "@/app/utils/constants";
 import SessionWrapper from "./components/custom/SessionWrapper";
 
 
@@ -37,7 +37,7 @@ async function getGlobal(lang: string): Promise<any> {
   return await fetchAPI(path, urlParamsObject, options);
 }
 
-export async function generateMetadata({ params } : { params: {lang: string}}): Promise<Metadata> {
+export async function generateMetadata({ params }: { params: { lang: string } }): Promise<Metadata> {
   const meta = await getGlobal("en");
 
   if (!meta.data) return FALLBACK_SEO;
@@ -64,7 +64,7 @@ export default async function RootLayout({
   const global = await getGlobal("en");
   // TODO: CREATE A CUSTOM ERROR PAGE
   if (!global.data) return null;
-  
+
   const { notificationBanner, navbar, footer } = global.data.attributes;
 
   const navbarLogoUrl = getStrapiMedia(
@@ -78,30 +78,30 @@ export default async function RootLayout({
   return (
     <SessionWrapper>
 
-    <html lang={"en"}>
-      <body>
-        <Navbar
-          links={navbar?.links}
-          logoUrl={navbarLogoUrl}
-          logoText={navbar?.navbarLogo?.logoText}
-        />
+      <html lang={"en"}>
+        <body>
+          <Navbar
+            links={navbar?.links}
+            logoUrl={navbarLogoUrl}
+            logoText={navbar?.navbarLogo?.logoText}
+          />
 
-        <main className="dark:bg-white  min-h-screen pt-20">
-          {children}
-        </main>
+          <main className="dark:bg-white  min-h-screen pt-20">
+            {children}
+          </main>
 
-        <Banner data={notificationBanner} />
+          <Banner data={notificationBanner} />
 
-        <Footer
-          logoUrl={footerLogoUrl}
-          logoText={footer?.footerLogo.logoText}
-          menuLinks={footer?.menuLinks}
-          categoryLinks={footer?.categories.data}
-          legalLinks={footer?.legalLinks}
-          socialLinks={footer?.socialLinks}
-        />
-      </body>
-    </html>
+          <Footer
+            logoUrl={footerLogoUrl}
+            logoText={footer?.footerLogo.logoText}
+            menuLinks={footer?.menuLinks}
+            categoryLinks={footer?.categories.data}
+            legalLinks={footer?.legalLinks}
+            socialLinks={footer?.socialLinks}
+          />
+        </body>
+      </html>
     </SessionWrapper>
 
   );
