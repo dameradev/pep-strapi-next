@@ -8,7 +8,7 @@ import { Button } from "../ui/button";
 import { Loader } from 'lucide-react';
 import RangeDatePicker from '../ui/RangeDatePicker';
 
-const fetchProjects = async (start, limit, filters) => {
+const fetchProjects = async (page, pageSize, filters) => {
   const token = process.env.NEXT_PUBLIC_STRAPI_API_TOKEN;
   const endpoint = process.env.NEXT_PUBLIC_GRAPHQL_URL;
 
@@ -19,8 +19,8 @@ const fetchProjects = async (start, limit, filters) => {
   });
 
   const query = gql`
-    query Projects($start: Int, $limit: Int, $filters: ProjectFiltersInput) {
-      projects(pagination: { start: $start, limit: $limit }, sort: "createdAt:desc", filters: $filters) {
+    query Projects($page: Int, $pageSize: Int, $filters: ProjectFiltersInput) {
+      projects(pagination: { page: $page, pageSize: $pageSize }, sort: "createdAt:desc", filters: $filters) {
         data {
           id
           attributes {
@@ -50,13 +50,21 @@ const fetchProjects = async (start, limit, filters) => {
             }
           }
         }
+        meta {
+          pagination {
+            total
+            page
+            pageSize
+            pageCount
+          }
+        }
       }
     }
   `;
 
   const variables = {
-    start: start,
-    limit: limit,
+    page: page,
+    pageSize: pageSize,
     filters: filters,
   };
 
@@ -70,17 +78,24 @@ const Profile = () => {
   const [search, setSearch] = useState("");
   const [country, setCountry] = useState("");
   const [dateRange, setDateRange] = useState({ from: null, to: null });
+  const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
 
   useEffect(() => {
     const loadProjects = async () => {
       setLoading(true);
-      const projectsData = await fetchProjects(0, Number(process.env.NEXT_PUBLIC_PAGE_LIMIT), buildFilters());
-      setProjects(projectsData?.data);
+      const projectsData = await fetchProjects(page, Number(process.env.NEXT_PUBLIC_PAGE_LIMIT), buildFilters());
+      if (page === 1) {
+        setProjects(projectsData?.data);
+      } else {
+        setProjects(prevProjects => [...prevProjects, ...projectsData?.data]);
+      }
+      setTotalPages(projectsData?.meta?.pagination?.pageCount);
       setLoading(false);
     };
 
     loadProjects();
-  }, [search, country, dateRange]);
+  }, [search, country, dateRange, page]);
 
   const handleSearchChange = (e) => {
     setSearch(e.target.value);
@@ -107,8 +122,6 @@ const Profile = () => {
     if (country) {
       filtersObj.country = { eq: country };
     }
-    console.log(new Date(dateRange.from))
-    console.log(new Date(dateRange.to).toUTCString())
     if (dateRange.from && dateRange.to) {
       filtersObj.startDate = { gte: new Date(dateRange.from).toISOString().split('T')[0] }; // Ensure only the date part is used
       filtersObj.endDate = { lte: new Date(dateRange.to).toISOString().split('T')[0] }; // Ensure only the date part is used
@@ -117,10 +130,11 @@ const Profile = () => {
     console.log(filtersObj);
     return filtersObj;
   };
-  // const [date, setDate] = React.useState<DateRange | undefined>({
-  //   from: startDate,
-  //   to: endDate,
-  // })
+
+  const loadMoreProjects = () => {
+    setPage(prevPage => prevPage + 1);
+  };
+
   return (
     <div className='px-10 mt-20'>
       <PageHeader heading="Our Projects" text="Filter to find the one that suits you" />
@@ -154,21 +168,19 @@ const Profile = () => {
             <RangeDatePicker
               date={dateRange}
               setDate={setDateRange}
-              // startDate={dateRange.startDate}
-              // endDate={dateRange.endDate}
               onChange={handleDateRangeChange}
               className="w-full px-3 py-2 border rounded-md"
             />
           </div>
         </div>
         <div>
-          {loading ? (
+          {loading && page === 1 ? (
             <Loader className="animate-spin" />
           ) : (
-            <ul className="flex flex-col gap-10">
-              {projects?.map((project) => (
-                <li className="" key={project.id}>
-                  <Link href={`/project/${project.id}`}>
+            <>
+              <ul className="flex flex-col gap-10">
+                {projects?.map((project) => (
+                  <li className="" key={project.id}>
                     <article className="grid grid-cols-[40%_1fr] rounded-lg bg-white shadow-secondary-1 dark:bg-surface-dark text-surface h-[20rem]">
                       <div className="relative overflow-hidden bg-cover bg-no-repeat">
                         <Image
@@ -179,9 +191,11 @@ const Profile = () => {
                         />
                       </div>
                       <div className="p-6">
-                        <h5 className="mb-2 text-xl font-medium leading-tight">
-                          {project.attributes.title}
-                        </h5>
+                        <Link href={`/project/${project.id}`}>
+                          <h3 className="mb-2 text-xl font-medium leading-tight">
+                            {project.attributes.title}
+                          </h3>
+                        </Link>
                         <p className="mb-4 text-base">
                           {project.attributes.description}
                         </p>
@@ -189,14 +203,21 @@ const Profile = () => {
                           <small>{project.attributes.organization?.data?.attributes?.name}</small>
                         </p>
                         <Button variant="outline" className="mt-4">
-                          View more details
+                          <Link href={`/project/${project.id}`}>
+                            View more details
+                          </Link>
                         </Button>
                       </div>
                     </article>
-                  </Link>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+              {page < totalPages && (
+                <div className="flex justify-center mt-10">
+                  <Button onClick={loadMoreProjects}>Load More</Button>
+                </div>
+              )}
+            </>
           )}
         </div>
       </div>
